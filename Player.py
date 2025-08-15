@@ -4,7 +4,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         PATH = "FlappyBird/Assets"
-        self.spriteSheet = pygame.image.load(f"{PATH}/Player/StyleBird2/Bird2-1.png").convert_alpha()
+        self.spriteSheet = pygame.image.load(f"Assets/Player/StyleBird2/Bird2-1.png").convert_alpha()
         print(self.spriteSheet.get_size())
         self.image = pygame.transform.scale(self.getSprite(0,0,16,16),(64,64))
         self.rect = self.image.get_rect(center =(200,360))

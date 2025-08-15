@@ -4,7 +4,7 @@ import Player
 
 def start(game):
     """Background"""
-    game.backgroundSurface = pygame.image.load(f"{PATH}/Background/Background1.png").convert_alpha()
+    game.backgroundSurface = pygame.image.load("Assets/Background/Background1.png").convert_alpha()
     game.scaledBackground = pygame.transform.scale(game.backgroundSurface, (400,720))
     
     """Groups"""
@@ -20,7 +20,6 @@ def update(game, screen, keys, events):
 
 if '__main__' == __name__:
     screensize = (400,720)
-    PATH = "FlappyBird/Assets"
     game = initPygame.InitPyGame(screensize, "Flappy Bird")
     game.onStart(start)
     game.gameloop(update)
