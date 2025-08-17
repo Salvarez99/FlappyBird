@@ -24,6 +24,8 @@ class InitPyGame:
 
         if delay != None:
             pygame.time.set_timer(eventType, delay)
+        else:
+            func(self)
 
     def convertDelta(self, value):
         """Converts a speed in pixels/sec to pixels/frame."""
