@@ -1,13 +1,11 @@
 import pygame
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self,game):
         super().__init__()
-        PATH = "FlappyBird/Assets"
         self.spriteSheet = pygame.image.load(f"Assets/Player/StyleBird2/Bird2-1.png").convert_alpha()
-        print(self.spriteSheet.get_size())
         self.image = pygame.transform.scale(self.getSprite(0,0,16,16),(64,64))
-        self.rect = self.image.get_rect(center =(200,360))
+        self.rect = self.image.get_rect(midbottom =(75,360))
 
         self.gravity = 0
     
@@ -23,12 +21,16 @@ class Player(pygame.sprite.Sprite):
         return sprite
 
     def playerInput(self, game):
-        if game.isKeyPressed(pygame.K_SPACE):
-            self.gravity -= 1500
+        if game.isKeyPressed(pygame.K_SPACE) or game.isMouseButtonDown(1):
+            self.gravity = -700
+            print("Jump")
+            print(f"y-pos: {self.rect.bottom}")
+
+            pass
         pass
 
     def applyGravity(self, game):
-        self.gravity += game.convertDelta(1500)
+        self.gravity += 30
         self.rect.y += game.convertDelta(self.gravity)
 
         if self.rect.bottom >= 720:
