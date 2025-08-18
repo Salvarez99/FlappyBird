@@ -23,9 +23,16 @@ def start(game):
     game.backgroundSurface = pygame.image.load("Assets/Background/Background1.png").convert_alpha()
     game.scaledBackground = pygame.transform.scale(game.backgroundSurface, (400,720))
     
+    """Sound"""
+    game.die = pygame.mixer.Sound(f'Assets/Sounds/sfx_die.mp3')
+    game.die.set_volume(.2)
+    game.backgroundMusic = pygame.mixer.Sound(f'Assets/Sounds/doors-elevator-music.mp3')
+    game.backgroundMusic.set_volume(0.1)
+    game.backgroundMusic.play(loops = -1)
+
     """Text"""
     game.Font = pygame.font.Font("./Pixeltype.ttf", 50)
-    game.startTextSurface = game.Font.render("Press space to start!", False, (255,255,255))
+    game.startTextSurface = game.Font.render("Press space to start\n        or LMB to start!", False, (255,255,255))
     game.startTextRect = game.startTextSurface.get_rect(center=(200,400))
     
     game.scoreSurface = game.Font.render("Score: 0", False, (255,255,255))
@@ -52,30 +59,34 @@ def update(game, screen, keys, events):
 
     screen.blit(game.scaledBackground, (0,0))
     game.player.draw(screen)
+    game.enemyGroup.draw(screen)
     game.floorGroup.draw(screen)
 
     if game.active:
         game.player.update(game)
-        game.enemyGroup.draw(screen)
         game.enemyGroup.update(game)
         game.scoreSurface = game.Font.render(f'Score: {game.score}', False, (255,255,255))
 
         screen.blit(game.scoreSurface, game.scoreRect)
 
         if pygame.sprite.spritecollide(game.player.sprite, game.enemyGroup, False):
+            game.die.play()
             game.enemyGroup.empty()
             game.active = False
             game.over = True
-
     else:
-        
-        if not game.over:
-            if game.isKeyPressed(pygame.K_SPACE) or game.isMouseButtonDown(1):
-                game.active = True
-        else:
+        if game.over:
             game.startTextSurface = game.Font.render("Game Over!", False, (255,255,255))
             game.startTextRect = game.startTextSurface.get_rect(center=(200,360))
-            pass
+        if game.isKeyPressed(pygame.K_SPACE) or game.isMouseButtonDown(1):
+            game.active = True
+            game.over = False
+            game.score = 0
+            game.player.sprite.rect.midbottom = (75,360)
+            game.player.sprite.gravity = 0
+            game.enemyGroup.empty()
+            game.onEvent("Spawn Obstacle", spawnObstacle)
+        pass
 
         pygame.draw.rect(screen, "#b68728", game.startTextRect, border_radius=10)
         screen.blit(game.startTextSurface, game.startTextRect)

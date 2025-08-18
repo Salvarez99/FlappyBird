@@ -3,6 +3,9 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self,game):
         super().__init__()
+        self.flySound = pygame.mixer.Sound(f'Assets/Sounds/sfx_wing.mp3')
+        self.flySound.set_volume(.2)
+
         self.spriteSheet = pygame.image.load(f"Assets/Player/StyleBird2/Bird2-1.png").convert_alpha()
 
                 # Slice into frames (1 row, 4 cols, each 16x16)
@@ -34,6 +37,7 @@ class Player(pygame.sprite.Sprite):
 
     def playerInput(self, game):
         if game.isKeyPressed(pygame.K_SPACE) or game.isMouseButtonDown(1):
+            self.flySound.play()
             self.gravity = -700
             pass
         pass
@@ -43,7 +47,13 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += game.convertDelta(self.gravity)
 
         if self.rect.bottom >= 656:
+            game.die.play()
             self.rect.bottom = 656
+            game.active = False
+            game.over = True
+        elif self.rect.bottom <= 0:
+            game.die.play()
+            self.rect.bottom = 0
             game.active = False
             game.over = True
         pass

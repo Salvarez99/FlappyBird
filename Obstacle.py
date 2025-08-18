@@ -4,6 +4,8 @@ from random import randint
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self,game, y_pos, flipped, isBottom=False):
         super().__init__()
+        self.point = pygame.mixer.Sound(f'Assets/Sounds/sfx_point.mp3')
+        self.point.set_volume(.2)
         self.spriteSheet = pygame.image.load(f"Assets/Tiles/Style 1/PipeStyle1.png").convert_alpha()
         pipe_image = pygame.transform.scale(self.getSprite(0,0,32,80),(128,640))
         # self.rect = self.image.get_rect(midbottom =(200,360))
@@ -41,6 +43,7 @@ class Obstacle(pygame.sprite.Sprite):
 
     def score(self,game):
         if self.rect.x <= -128 and self.isBottom:
+            self.point.play()
             game.score += 1
         pass
         
