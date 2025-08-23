@@ -7,7 +7,7 @@ from random import randint
 
 def spawnObstacle(game):
     gap_size = -225
-    gap_y = randint(200, 500)
+    gap_y = randint(100, 500)
 
     top_pipe = Obstacle.Obstacle(game, gap_y - gap_size//2, flipped=True, isBottom=False)
     bottom_pipe = Obstacle.Obstacle(game, gap_y + gap_size//2, flipped=False, isBottom=True)
